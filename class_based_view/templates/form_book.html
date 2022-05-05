@@ -1,7 +1,5 @@
-<h1>Index</h1>
-
 <form action="" method="POST">
     {% csrf_token %}
-    {{book_form.as_p}}
+    {{form.as_p}}
     <input type="submit" value="送信">
 </form>
