@@ -18,5 +18,19 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+class Users(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=150)
+    email = models.EmailField(max_length=255, unique=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+
+    # このテーブルを一意に識別するためのFIELD
+    USERNAME_FIELD = 'email'
+
+    # SUPERUSERを作成するために必要なフィールド
+    REQUIRED_FIELDS = ['username', ]
+
+    objects = UserManager()
+
+    def get_absolute_url(self):
+        return reverse_lazy("accounts:home")

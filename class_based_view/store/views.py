@@ -7,6 +7,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.urls import reverse_lazy
+from django.contrib.messages.views import SuccessMessageMixin
 from .models import Books
 from datetime import datetime
 
@@ -98,15 +99,21 @@ class BookCreateView(CreateView):
         return initial
 
 
-class BookUpdateView(UpdateView):
+class BookUpdateView(SuccessMessageMixin, UpdateView):
     model = Books
     template_name = 'update_book.html'
     form_class = forms.BookUpdateForm
+    success_message = "更新に成功しました"
 
     # 成功処理
     def get_success_url(self):
         print(self.object)
         return reverse_lazy('store:edit_book', kwargs={'pk': self.object.id})
+
+    # success messageを更新できる
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return cleaned_data.get('name') + 'を更新しました'
 
 
 class BookDeleteView(DeleteView):

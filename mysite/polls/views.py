@@ -3,6 +3,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.urls import reverse
 from .models import Question, Choice
 from django.views import generic
+from django.utils import timezone
 
 
 def index(request):
@@ -13,6 +14,7 @@ def index(request):
     # 第三引数に送りたい変数を書く
     return render(request, 'polls/index.html', context)
 
+
 # listViewは複数のオブジェクトを返してくれる
 class IndexView(generic.ListView):
     template_name = 'polls/index.html'
@@ -20,7 +22,11 @@ class IndexView(generic.ListView):
     context_object_name = "latest_question_list"
 
     def get_queryset(self):
-        return Question.objects.order_by('-pub_data')[:5]
+        # return Question.objects.order_by('-pub_data')[:5]
+        return Question.objects.filter(
+            # lteで日付より前を参照できる
+            pub_data__lte=timezone.now()
+        ).order_by('-pub_data')[:5]
 
 
 # def detail(request, question_id):
@@ -35,6 +41,9 @@ class DetailView(generic.DetailView):
     # 個別の内容を取得することができる
     model = Question
     template_name = 'polls/detail/detail.html'
+
+    def get_queryset(self):
+        return Question.objects.filter(pub_data__lte=timezone.now())
 
 
 # def results(request, question_id):

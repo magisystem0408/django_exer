@@ -19,7 +19,9 @@ class Question(models.Model):
     # 関数メソッド
     # 最近公開されたかどうか
     def was_published_recently(self):
-        return self.pub_data >= timezone.now() -datetime.timedelta(days=1)
+        # return self.pub_data >= timezone.now() -datetime.timedelta(days=1)
+        now = timezone.now()
+        return now - datetime.timedelta(days=1) <= self.pub_data <= now
 
 
 class Choice(models.Model):
