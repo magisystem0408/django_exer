@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-r)-jg_so2bb-7j3onqw$x^l1)(jqxpddpvi#31^_2#v_+vr)4v'
 
 # ここをFalseにするとproductionになる
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
